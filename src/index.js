@@ -1,9 +1,13 @@
-﻿require("dotenv").config();
+﻿// ============================================================
+// Solana 新币监控 v9.0 - WebSocket 实时版
+// ============================================================
+
+require("dotenv").config();
 const config = require("./config");
 const monitor = require("./monitor");
 const fetch = require("node-fetch");
 
-console.log("=== Solana 新币监控 v8.7 ===");
+console.log("=== Solana 新币监控 v9.0 ===");
 console.log("RPC:", config.RPC_ENDPOINT);
 console.log("DEX程序数:", require("./dexs").DEX_PROGRAMS.length);
 console.log("轮询间隔:", config.POLL_INTERVAL_MS + "ms");
@@ -18,7 +22,7 @@ async function sendStartupMsg() {
     const resp = await fetch("https://api.telegram.org/bot" + config.TELEGRAM_BOT_TOKEN + "/sendMessage", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: config.TELEGRAM_CHAT_ID, text: "✅ Solana 新币监控 v8.7 启动成功\nDEX: " + require("./dexs").DEX_PROGRAMS.length + " 个 | 轮询: " + (config.POLL_INTERVAL_MS / 1000) + "s", disable_web_page_preview: true }),
+      body: JSON.stringify({ chat_id: config.TELEGRAM_CHAT_ID, text: "✅ Solana 新币监控 v9.0 启动成功\nDEX: " + require("./dexs").DEX_PROGRAMS.length + " 个 | 轮询: " + (config.POLL_INTERVAL_MS / 1000) + "s", disable_web_page_preview: true }),
       signal: ctrl.signal
     });
     clearTimeout(timer);
@@ -53,3 +57,5 @@ sendStartupMsg().then(() => {
     console.log("[状态] " + uptime + "s | 扫描:" + s.scans + " | 新币:" + s.pools + " | 错误:" + s.errors);
   }, 60000);
 });
+
+
