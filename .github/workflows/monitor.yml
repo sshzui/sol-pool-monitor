@@ -25,9 +25,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           while true; do
-            echo "[06/03/2026 00:07:21] 启动监控进程..."
+            echo "[$(date)] 启动监控进程..."
             node src/index.js
-            echo "[06/03/2026 00:07:21] 监控进程退出，30 秒后重启..."
+            echo "[$(date)] 监控进程退出"，30 秒后重启..."
             sleep 30
           done
+
 
