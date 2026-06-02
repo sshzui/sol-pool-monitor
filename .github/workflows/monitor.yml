@@ -27,7 +27,7 @@ jobs:
           while true; do
             echo "[$(date)] 启动监控进程..."
             node src/index.js
-            echo "[$(date)] 监控进程退出"，30 秒后重启..."
+            echo "[$(date)] 监控进程退出，30 秒后重启..."
             sleep 30
           done
 
