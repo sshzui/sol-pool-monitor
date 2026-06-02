@@ -1,0 +1,33 @@
+﻿name: Solana 新池监控 24/7
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm install
+      - name: Start Monitor
+        env:
+          RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          while true; do
+            echo "[06/03/2026 00:07:21] 启动监控进程..."
+            node src/index.js
+            echo "[06/03/2026 00:07:21] 监控进程退出，30 秒后重启..."
+            sleep 30
+          done
+
