@@ -3,8 +3,6 @@
 on:
   push:
     branches: [ main ]
-  schedule:
-    - cron: '0 */3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,15 +18,13 @@ jobs:
         run: npm install
       - name: Start Monitor
         env:
-          RPC_ENDPOINT: ${{ secrets.RPC_ENDPOINT }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
         run: |
           while true; do
-            echo "[$(date)] 启动监控进程..."
+            echo "[$(date)] 启动监控..."
             node src/index.js
-            echo "[$(date)] 监控进程退出，30 秒后重启..."
+            echo "[$(date)] 监控退出，30秒后重启..."
             sleep 30
           done
-
-
