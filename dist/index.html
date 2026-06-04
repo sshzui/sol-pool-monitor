@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solana Token-2022 Creator</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #58a6ff;
+    }
+    .subtitle {
+      text-align: center;
+      color: #8b949e;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: #c9d1d9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h2 .step-num {
+      display: inline-flex;
+      width: 24px; height: 24px;
+      align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: #30363d;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .card h2 .step-num.done {
+      background: #238636;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 4px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #e6edf3;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #58a6ff;
+    }
+    .form-group textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #238636;
+      color: #fff;
+    }
+    .btn-primary:hover:not(:disabled) { background: #2ea043; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary {
+      background: #30363d;
+      color: #c9d1d9;
+    }
+    .btn-secondary:hover { background: #3d444d; }
+    .btn-warning {
+      background: #da3633;
+      color: #fff;
+    }
+    .btn-warning:hover { background: #f85149; }
+    .wallet-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    #wallet-status {
+      font-size: 13px;
+      color: #8b949e;
+    }
+    #wallet-status.connected {
+      color: #3fb950;
+    }
+    #wallet-balance {
+      font-size: 13px;
+      color: #8b949e;
+      margin-left: 8px;
+    }
+    #wallet-balance.balance-ok { color: #3fb950; }
+    #wallet-balance.balance-low { color: #d29922; }
+    .btn-copy {
+      background: none;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: 12px;
+      vertical-align: middle;
+      transition: all 0.2s;
+    }
+    .btn-copy:hover { background: #30363d; }
+    #wallet-info {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    #status {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      max-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    #status .log-error { color: #f85149; }
+    #status .log-success { color: #3fb950; }
+    #status .log-warning { color: #d29922; }
+
+    .steps {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    .step {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: #30363d;
+      transition: background 0.3s;
+    }
+    .step.active { background: #58a6ff; }
+    .step.done { background: #238636; }
+
+    #result {
+      display: none;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+    #result h3 { color: #3fb950; margin-bottom: 12px; }
+    #result table { width: 100%; margin-bottom: 12px; }
+    #result table td { padding: 4px 8px; font-size: 13px; }
+    #result table td:first-child { color: #8b949e; width: 80px; }
+    #result table td:last-child { word-break: break-all; }
+    #result .addr { font-family: monospace; color: #58a6ff; font-size: 12px; }
+    #result a { color: #58a6ff; font-size: 13px; }
+    #result pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 10px;
+      font-size: 11px;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+    /* 日志切换 */
+    .log-header { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .log-header:hover { opacity: 0.8; }
+    .log-toggle { font-size: 12px; color: #8b949e; cursor: pointer; padding: 2px 8px; border: 1px solid #30363d; border-radius: 4px; background: none; }
+    .log-toggle:hover { background: #30363d; }
+    .log-body { overflow: hidden; transition: max-height 0.3s ease; max-height: 0; }
+    .log-body.open { max-height: 2000px; }
+    .network-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .network-devnet { background: #1f6feb22; color: #58a6ff; border: 1px solid #1f6feb44; }
+    .network-mainnet { background: #da363322; color: #f85149; border: 1px solid #da363344; }
+    .footer {
+      text-align: center;
+      color: #484f58;
+      font-size: 12px;
+      padding: 24px 0;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Solana Token Creator</h1>
+    <p class="subtitle">浏览器发币工具 · Token-2022 · 元数据自动生成</p>
+
+    <!-- 钱包连接 -->
+    <div class="card">
+      <h2>🔗 连接钱包</h2>
+      <div class="wallet-bar">
+        <div id="wallet-info">
+          <span id="wallet-status">未连接</span>
+          <span id="wallet-balance"></span>
+        </div>
+        <div>
+          <select id="wallet-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 6px;width:90px;">
+            <option value="auto">🤖 自动</option>
+            <option value="phantom">👻 Phantom</option>
+            <option value="okx">🔵 OKX</option>
+          </select>
+          <select id="network-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 12px;">
+            <option value="devnet">🧪 Devnet</option>
+            <option value="mainnet">🚀 Mainnet</option>
+          </select>
+          <button id="connect-btn" class="btn btn-primary">连接钱包</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 代币参数 -->
+    <div class="card">
+      <h2><span class="step-num">1</span> 代币参数</h2>
+      <div class="form-group">
+        <label>代币名称</label>
+        <input id="token-name" placeholder="例如: My Token" value="">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>符号</label>
+          <input id="token-symbol" placeholder="例如: MYT" value="">
+        </div>
+        <div class="form-group">
+          <label>精度</label>
+          <input id="token-decimals" type="number" value="9">
+        </div>
+        <div class="form-group">
+          <label>总量</label>
+          <input id="token-supply" type="number" value="10000000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>图片链接 (Arweave / IPFS / 图床)</label>
+        <input id="token-image" placeholder="https://arweave.net/... (可选)">
+      </div>
+      <div class="form-group">
+        <label>描述</label>
+        <textarea id="token-desc" placeholder="代币描述（可选）"></textarea>
+      </div>
+    </div>
+
+    <!-- RPC 配置 -->
+    <div class="card">
+      <h2>🔌 RPC 配置</h2>
+      <div class="form-group">
+        <label>自定义 RPC（可选，留空自动使用公共节点）</label>
+        <input id="custom-rpc" placeholder="https://rpc.helius.xyz/?api-key=你的KEY" value="">
+      </div>
+      <p style="font-size:12px;color:#8b949e;margin-top:-8px;">
+        公共 RPC 可能限流，填入 Helius/QuickNode 的 RPC 地址可避免 Access forbidden 错误
+      </p>
+    </div>
+
+    <!-- 创建 -->
+    <div class="card">
+      <h2><span class="step-num">2</span> 🚀 创建代币</h2>
+      <p style="font-size:13px;color:#8b949e;margin-bottom:12px;">
+        点下方按钮后钱包会弹出两次签名确认：① 创建代币 ② 铸币到你的钱包
+      </p>
+      <button id="create-btn" class="btn btn-primary" disabled style="width:100%;justify-content:center;padding:14px;">
+        ✨ 创建代币
+      </button>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="steps">
+      <div class="step active"></div>
+      <div class="step"></div>
+      <div class="step"></div>
+      <div class="step"></div>
+    </div>
+
+    <!-- 状态日志（默认隐藏） -->
+    <div class="card">
+      <div class="log-header" onclick="toggleLog()">
+        <h2 style="margin-bottom:0;flex:1">📋 日志</h2>
+        <span class="log-toggle" id="log-toggle-btn">▶ 展开</span>
+      </div>
+      <div class="log-body" id="log-body">
+        <div id="status" style="margin-top:12px">准备就绪，连接钱包开始</div>
+      </div>
+    </div>
+
+    <!-- 结果 -->
+    <div id="result"></div>
+
+    <div class="footer">
+      Created by sshzui · Powered by Solana Token-2022
+    </div>
+  </div>
+
+  <!-- Buffer polyfill -->
+  <script src="buffer-polyfill.js"></script>
+  <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.js"></script>
+  <script src="bundle.js"></script>
+  <script>
+    function toggleLog() {
+      const body = document.getElementById('log-body');
+      const btn = document.getElementById('log-toggle-btn');
+      body.classList.toggle('open');
+      btn.textContent = body.classList.contains('open') ? '▼ 收起' : '▶ 展开';
+    }
+  </script>
+</body>
+</html>
