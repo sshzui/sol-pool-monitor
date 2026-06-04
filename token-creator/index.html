@@ -216,9 +216,14 @@
       <div class="wallet-bar">
         <span id="wallet-status">未连接</span>
         <div>
-          <select id="network-select" class="btn btn-secondary" style="margin-right:8px;padding:8px 12px;">
-            <option value="devnet">🧪 Devnet 测试</option>
-            <option value="mainnet">🚀 Mainnet 主网</option>
+          <select id="wallet-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 6px;width:90px;">
+            <option value="auto">🤖 自动</option>
+            <option value="phantom">👻 Phantom</option>
+            <option value="okx">🔵 OKX</option>
+          </select>
+          <select id="network-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 12px;">
+            <option value="devnet">🧪 Devnet</option>
+            <option value="mainnet">🚀 Mainnet</option>
           </select>
           <button id="connect-btn" class="btn btn-primary">连接钱包</button>
         </div>
