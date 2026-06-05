@@ -238,52 +238,52 @@
 </head>
 <body>
   <div class="container">
-    <h1>&#9889; Solana Token Creator</h1>
+    <h1>⚡ Solana Token Creator</h1>
     <p class="subtitle">浏览器发币工具 · Token-2022</p>
 
-    <!-- 閽卞寘杩炴帴 -->
+    <!-- 钱包连接 -->
     <div class="card">
-      <h2>&#128279; 杩炴帴閽卞寘</h2>
+      <h2>🔗 连接钱包</h2>
       <div class="wallet-bar">
-        <span id="wallet-status">鏈繛鎺?/span>
+        <span id="wallet-status">未连接</span>
         <div>
           <select id="wallet-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 6px;width:90px;">
-            <option value="auto">&#129302; 鑷姩</option>
-            <option value="phantom">&#128123; Phantom</option>
-            <option value="okx">&#128309; OKX</option>
+            <option value="auto">🤖 自动</option>
+            <option value="phantom">👻 Phantom</option>
+            <option value="okx">🔵 OKX</option>
           </select>
           <select id="network-select" class="btn btn-secondary" style="margin-right:6px;padding:8px 12px;">
-            <option value="devnet">&#129514; Devnet</option>
-            <option value="mainnet">&#128640; Mainnet</option>
+            <option value="devnet">🧪 Devnet</option>
+            <option value="mainnet">🚀 Mainnet</option>
           </select>
-          <button id="connect-btn" class="btn btn-primary">杩炴帴閽卞寘</button>
+          <button id="connect-btn" class="btn btn-primary">连接钱包</button>
         </div>
       </div>
     </div>
 
-    <!-- 浠ｅ竵鍙傛暟 -->
+    <!-- 代币参数 -->
     <div class="card">
-      <h2><span class="step-num">1</span> 浠ｅ竵鍙傛暟</h2>
+      <h2><span class="step-num">1</span> 代币参数</h2>
       <div class="form-group">
-        <label>浠ｅ竵鍚嶇О</label>
-        <input id="token-name" placeholder="渚嬪: My Token" value="MyToken">
+        <label>代币名称</label>
+        <input id="token-name" placeholder="例如: My Token" value="MyToken">
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>绗﹀彿</label>
-          <input id="token-symbol" placeholder="渚嬪: MYT" value="MYT">
+          <label>符号</label>
+          <input id="token-symbol" placeholder="例如: MYT" value="MYT">
         </div>
         <div class="form-group">
-          <label>绮惧害</label>
+          <label>精度</label>
           <input id="token-decimals" type="number" value="9">
         </div>
         <div class="form-group">
-          <label>鎬婚噺</label>
+          <label>总量</label>
           <input id="token-supply" type="number" value="10000000">
         </div>
       </div>
       <div class="form-group">
-        <label>浠ｅ竵澶村儚锛堝彲閫夛紝涓婁紶鍚庡皢鑷姩鏄剧ず鍦ㄩ挶鍖呬腑锛?/label>
+        <label>代币头像（可选，上传后将自动显示在钱包中）</label>
         <div class="file-upload-wrapper">
           <input id="token-image-file" type="file" accept="image/*">
           <div class="file-upload-label" id="file-label">
@@ -291,25 +291,25 @@
               <path d="M8 1L8 11M8 1L11 4M8 1L5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M2 10V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span id="file-label-text">鐐瑰嚮閫夋嫨鍥剧墖锛圥NG/JPG锛?/span>
+            <span id="file-label-text">点击选择图片（PNG/JPG）</span>
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label>鎻忚堪</label>
-        <textarea id="token-desc" placeholder="浠ｅ竵鎻忚堪锛堝彲閫夛級"></textarea>
+        <label>描述</label>
+        <textarea id="token-desc" placeholder="代币描述（可选）"></textarea>
       </div>
     </div>
 
-    <!-- 鍒涘缓 -->
+    <!-- 创建 -->
     <div class="card">
-      <h2><span class="step-num">2</span> 馃殌 鍒涘缓浠ｅ竵</h2>
+      <h2><span class="step-num">2</span> 🚀 创建代币</h2>
       <button id="create-btn" class="btn btn-primary" disabled style="width:100%;justify-content:center;padding:14px;">
-        &#10024; 鍒涘缓浠ｅ竵
+        ✨ 创建代币
       </button>
     </div>
 
-    <!-- 杩涘害鏉?-->
+    <!-- 进度条 -->
     <div class="steps">
       <div class="step active"></div>
       <div class="step"></div>
@@ -317,25 +317,23 @@
       <div class="step"></div>
     </div>
 
-    <!-- 鐘舵€佹棩蹇?-->
+    <!-- 状态日志 -->
     <div class="card">
-      <h2>&#128203; 鏃ュ織</h2>
-      <div id="status">鍑嗗灏辩华锛岃繛鎺ラ挶鍖呭紑濮?/div>
+      <h2>📋 日志</h2>
+      <div id="status">准备就绪，连接钱包开始</div>
     </div>
 
-    <!-- 缁撴灉 -->
+    <!-- 结果 -->
     <div id="result"></div>
 
     <div class="footer">
-      Created by sshzui &middot; Powered by Solana Token-2022
+      Created by sshzui · Powered by Solana Token-2022
     </div>
   </div>
 
-  <!-- Buffer polyfill (Solana 娴忚鍣ㄧ幆澧冮渶瑕? -->
-  <script src="https://unpkg.com/buffer@5.7.1/index.js"></script>
-  <script>if(window.Buffer)globalThis.Buffer=window.Buffer;</script>
+  <!-- Buffer polyfill -->
+  <script src="buffer-polyfill.js"></script>
   <script src="https://unpkg.com/@solana/web3.js@1.98.0/lib/index.iife.js"></script>
   <script src="bundle.js?v=4"></script>
 </body>
 </html>
-
